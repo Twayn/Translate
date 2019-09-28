@@ -1,8 +1,9 @@
 package org.service.translate.translate.split;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 
@@ -17,7 +18,7 @@ public class SplitterTest {
 		String actual = splitter.split(withDelimiters).toString();
 		String expected = Arrays.toString(model.split("\\s+"));
 
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 
 	@Test
@@ -28,6 +29,6 @@ public class SplitterTest {
 		String actual = splitter.split(withDelimiters).toString();
 		String expected = Arrays.toString(model.split("\\s+"));
 
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 }

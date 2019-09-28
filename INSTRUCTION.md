@@ -33,7 +33,7 @@ There are two configuration files for this app:
 2) Translate properties.  
 *\src\main\resources\translate.properties*
 
-#####Google private key path
+####Google private key path
 
 To let application know about key location **google.key.from.environment** property exists.  
 It can take two values:  
