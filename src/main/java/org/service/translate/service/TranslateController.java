@@ -3,17 +3,26 @@ package org.service.translate.service;
 import java.util.List;
 
 import org.service.translate.history.HistorySaver;
-import org.service.translate.translate.validate.TranslateParamsValidator;
 import org.service.translate.translate.Translator;
+import org.service.translate.translate.validate.TranslateParamsValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Provides API for text translation.
+ * Accepts GET requests on /translate.
+ * Params:
+ * - text: text for translation.
+ * - from: source language code (en, ru, fr, es ...).
+ * - to: target language code.
+ *
+ * Return:
+ * - Text translated word by word (as a JSON).
+ * - If at least one of languages or a direction itself not supported
+ *   or some parameters is missed returns error message.
+ */
 @RestController
 public class TranslateController {
 	private final HistorySaver saver;
@@ -29,25 +38,14 @@ public class TranslateController {
 
 	@GetMapping("/translate")
 	public List<String> translate(@RequestParam String text, @RequestParam String from, @RequestParam String to) {
-		if(validator.translateIsSupported(from, to)){
-			List<String> result = translator.translate(text, from, to);
+		if(validator.translateIsSupported(from, to)) {
+			var result = translator.translate(text, from, to);
 			saver.saveHistory(text, from, to, result);
 			return result;
+		} else {
+			String msg = String.format("Unsupported language pair: %s|%s", from, to);
+			saver.saveHistory(text, from, to, List.of(msg));
+			throw new RuntimeException(msg);
 		}
-
-		throw new RuntimeException("Translate from '" + from + "' to '" + to + "' not supported");
-	}
-
-	@ExceptionHandler(MissingServletRequestParameterException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public Error handleMissingParams(MissingServletRequestParameterException ex) {
-		String name = ex.getParameterName();
-		return new Error("Parameter is missing: " + name);
-	}
-
-	@ExceptionHandler(RuntimeException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public Error runtime(RuntimeException ex) {
-		return new Error(ex.getMessage());
 	}
 }

@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * Splits text to words using regular expression.
- * Split occurs by one or more not alphanumeric symbols.
+ * Splits text into words using regular expression.
+ * Split occurs by one or more non alphanumeric symbols.
  */
 @Service
 public class SplitByNotAlphanumeric implements Splitter {
