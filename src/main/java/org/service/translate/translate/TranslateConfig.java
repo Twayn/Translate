@@ -31,7 +31,7 @@ public class TranslateConfig {
 
 	@Bean
 	@ConditionalOnProperty(prefix = "google.key.from", value = "environment", havingValue = "true", matchIfMissing = true)
-	Translate defaultKeyLocation() {
+	Translate envVarKeyLocation() {
 		return TranslateOptions.getDefaultInstance().getService();
 	}
 

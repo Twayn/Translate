@@ -7,9 +7,14 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Entity for representing request and result when service calling.
  */
+@Getter
+@Setter
 @Entity
 public class TranslateHistory extends BaseEntity {
 	@Column(name = "text_param")
@@ -30,45 +35,5 @@ public class TranslateHistory extends BaseEntity {
 
 	public TranslateHistory() {
 		this.accessTime = ZonedDateTime.now();
-	}
-
-	public ZonedDateTime getAccessTime() {
-		return accessTime;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public String getFrom() {
-		return from;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public List<String> getResult() {
-		return result;
-	}
-
-	public void setAccessTime(ZonedDateTime accessTime) {
-		this.accessTime = accessTime;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-	public void setResult(List<String> result) {
-		this.result = result;
 	}
 }

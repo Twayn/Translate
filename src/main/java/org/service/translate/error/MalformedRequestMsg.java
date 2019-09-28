@@ -1,21 +1,18 @@
 package org.service.translate.error;
 
+import javax.validation.constraints.NotNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Service response for malformed requests.
  * e.g. missing parameter or not supported language code.
  */
-public class MalformedRequestMsg {
-	private String error;
-
-	public MalformedRequestMsg(String error) {
-		this.error = error;
-	}
-
-	public String getError() {
-		return error;
-	}
-
-	public void setError(String error) {
-		this.error = error;
-	}
+@Getter
+@Setter
+@AllArgsConstructor
+class MalformedRequestMsg {
+	@NotNull private final String error;
 }

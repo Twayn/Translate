@@ -1,5 +1,7 @@
 package org.service.translate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import org.junit.Assert;
@@ -24,7 +26,7 @@ public class TranslateApplicationTests {
 
 	@Test
 	@Transactional
-	public void historyItemShoudBeSaved() {
+	public void historyItemShouldBeSaved() {
 		TranslateHistory item = new TranslateHistory();
 		item.setText("home");
 		item.setFrom("en");
@@ -41,10 +43,26 @@ public class TranslateApplicationTests {
 	}
 
 	@Test
-	public void greetingShouldReturnDefaultMessage() throws Exception {
-//		assertThat(restTemplate.getForObject("http://localhost:8080/translate/?text=abc,aad&from=jhg&to=ggg",
-//				String.class)).contains("[\"abc\",\"aad\"]");
+	public void enRuTranslateShouldBeDone() {
+		assertThat(restTemplate.getForObject("http://localhost:8080/translate/?text=home,get&from=en&to=ru",
+				String.class)).contains("[\"Главная\",\"получить\"]");
+	}
 
-//		http://localhost:8080/translate/?text=home,get&from=en&to=ru
+	@Test
+	public void ruEnTranslateShouldBeDone() {
+		assertThat(restTemplate.getForObject("http://localhost:8080/translate/?text=разный,звук&from=ru&to=en",
+				String.class)).contains("[\"different\",\"sound\"]");
+	}
+
+	@Test
+	public void requestWithMissingParameterShouldReturnError() {
+		assertThat(restTemplate.getForObject("http://localhost:8080/translate/?text=home,get&from=en",
+				String.class)).contains("Parameter is missing");
+	}
+
+	@Test
+	public void requestWithNonSupportedLanguageShouldReturnError() {
+		assertThat(restTemplate.getForObject("http://localhost:8080/translate/?text=home,get&from=en&to=rus",
+				String.class)).contains("Unsupported language pair");
 	}
 }

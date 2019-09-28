@@ -43,7 +43,7 @@ public class TranslateController {
 			saver.saveHistory(text, from, to, result);
 			return result;
 		} else {
-			String msg = String.format("Unsupported language pair: %s|%s", from, to);
+			var msg = String.format("Unsupported language pair: %s|%s", from, to);
 			saver.saveHistory(text, from, to, List.of(msg));
 			throw new RuntimeException(msg);
 		}
