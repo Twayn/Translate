@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Returns:
  * - Text translated word by word (as a JSON).
  * - If at least one of languages or a direction itself not supported
- *   or some parameters is missed returns error message.
+ *   or some parameters are missing returns error message.
  */
 @RestController
 public class TranslateController {
@@ -30,14 +30,18 @@ public class TranslateController {
 	private final TranslateParamsValidator validator;
 
 	@Autowired
-	public TranslateController(HistorySaver saver, Translator translator, TranslateParamsValidator validator) {
+	public TranslateController(HistorySaver saver,
+							   Translator translator,
+							   TranslateParamsValidator validator) {
 		this.saver = saver;
 		this.translator = translator;
 		this.validator = validator;
 	}
 
 	@GetMapping("/translate")
-	public List<String> translate(@RequestParam String text, @RequestParam String from, @RequestParam String to) {
+	public List<String> translate(@RequestParam String text,
+								  @RequestParam String from,
+								  @RequestParam String to) {
 		if(validator.translateIsSupported(from, to)) {
 			var result = translator.translate(text, from, to);
 			saver.saveHistory(text, from, to, result);

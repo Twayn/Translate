@@ -30,13 +30,18 @@ public class TranslateConfig {
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "google.key.from", value = "environment", havingValue = "true", matchIfMissing = true)
+	@ConditionalOnProperty(prefix = "google.key.from",
+						   value = "environment",
+						   havingValue = "true",
+						   matchIfMissing = true)
 	Translate envVarKeyLocation() {
 		return TranslateOptions.getDefaultInstance().getService();
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "google.key.from", value = "environment", havingValue = "false")
+	@ConditionalOnProperty(prefix = "google.key.from",
+						   value = "environment",
+						   havingValue = "false")
 	Translate systemPathKeyLocation() throws IOException {
 		var builder = TranslateOptions.newBuilder();
 		var credentials = fromStream(new FileInputStream(key))

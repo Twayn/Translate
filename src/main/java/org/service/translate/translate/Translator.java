@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface Translator {
 	/**
-	 *
+	 * Make text translation.
 	 * @param text source text for translation.
 	 * @param from source language code.
 	 * @param to target language code.

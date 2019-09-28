@@ -30,7 +30,7 @@ public class TranslateHistory extends BaseEntity {
 	@ElementCollection
 	private List<String> result;
 
-	@Column(name = "access_date")
+	@Column(name = "access_time")
 	private ZonedDateTime accessTime;
 
 	public TranslateHistory() {
