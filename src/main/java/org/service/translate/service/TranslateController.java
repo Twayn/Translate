@@ -1,5 +1,7 @@
 package org.service.translate.service;
 
+import static org.service.translate.error.MalformedRequestMsg.ofBadLangPair;
+
 import java.util.List;
 
 import org.service.translate.history.HistorySaver;
@@ -47,7 +49,7 @@ public class TranslateController {
 			saver.saveHistory(text, from, to, result);
 			return result;
 		} else {
-			var msg = String.format("Unsupported language pair: %s|%s", from, to);
+			var msg = ofBadLangPair(from, to).getMsg();
 			saver.saveHistory(text, from, to, List.of(msg));
 			throw new RuntimeException(msg);
 		}

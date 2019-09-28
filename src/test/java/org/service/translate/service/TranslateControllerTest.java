@@ -4,6 +4,8 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.service.translate.error.MalformedRequestMsg.ofBadLangPair;
+import static org.service.translate.error.MalformedRequestMsg.ofMissingPar;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,13 +28,13 @@ public class TranslateControllerTest {
 	private MockMvc mvc;
 
 	@MockBean
-	private TranslateController service;
+	private TranslateController controller;
 
 	@Test
 	public void enRuTranslationShouldBeDone() throws Exception {
 		List<String> expected = List.of("Главная", "получить");
 
-		given(service.translate("home,get", "en", "ru")).willReturn(expected);
+		given(controller.translate("home,get", "en", "ru")).willReturn(expected);
 
 		mvc.perform(get("/translate/?text=home,get&from=en&to=ru")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -46,7 +48,7 @@ public class TranslateControllerTest {
 	public void ruEnTranslationShouldBeDone() throws Exception {
 		List<String> expected = List.of("different", "sound");
 
-		given(service.translate("разный,звук", "ru", "en")).willReturn(expected);
+		given(controller.translate("разный,звук", "ru", "en")).willReturn(expected);
 
 		mvc.perform(get("/translate/?text=разный,звук&from=ru&to=en")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -61,18 +63,18 @@ public class TranslateControllerTest {
 		mvc.perform(get("/translate/?text=home,get&from=en")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.error", containsString("Parameter is missing")));
+				.andExpect(jsonPath("$.msg", containsString(ofMissingPar("to").getMsg())));
 	}
 
 	@Test
 	public void requestWithNonSupportedLanguageShouldReturnErrorMsg() throws Exception {
-		Exception expected = new RuntimeException("Unsupported language pair");
+		Exception expected = new RuntimeException(ofBadLangPair("en", "rus").getMsg());
 
-		given(service.translate("home,get", "en", "rus")).willThrow(expected);
+		given(controller.translate("home,get", "en", "rus")).willThrow(expected);
 
 		mvc.perform(get("/translate/?text=home,get&from=en&to=rus")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.error", is(expected.getMessage())));
+				.andExpect(jsonPath("$.msg", is(expected.getMessage())));
 	}
 }
