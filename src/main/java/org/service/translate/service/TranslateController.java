@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * - from: source language code (en, ru, fr, es ...).
  * - to: target language code.
  *
- * Return:
+ * Returns:
  * - Text translated word by word (as a JSON).
  * - If at least one of languages or a direction itself not supported
  *   or some parameters is missed returns error message.

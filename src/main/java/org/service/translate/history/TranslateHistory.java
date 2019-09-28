@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
+/**
+ * Entity for representing request and result when service calling.
+ */
 @Entity
 public class TranslateHistory extends BaseEntity {
 	@Column(name = "text_param")

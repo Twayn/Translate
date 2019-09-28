@@ -12,7 +12,7 @@ import com.google.cloud.translate.Translate;
 
 /**
  * Test the possibility of translate in requested direction (by Google Translate).
- * Both languages and direction itself must be supported by Google.
+ * Both languages and direction itself must be supported by Google service.
  */
 @Service
 public class GoogleTranslateParamsValidator implements TranslateParamsValidator {

@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * JPA implementation for saving service access requests and responses.
+ */
 @Component
 public class JPAHistorySaver implements HistorySaver {
 	private final TranslateHistoryRepository repository;

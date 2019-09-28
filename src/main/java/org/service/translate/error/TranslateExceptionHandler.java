@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 @ResponseBody
 public class TranslateExceptionHandler {
-
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MalformedRequestMsg handleMissingParams(MissingServletRequestParameterException ex) {
@@ -24,5 +23,4 @@ public class TranslateExceptionHandler {
 	public MalformedRequestMsg runtime(RuntimeException ex) {
 		return new MalformedRequestMsg(ex.getMessage());
 	}
-
 }
